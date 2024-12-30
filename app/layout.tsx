@@ -5,6 +5,8 @@ import GlobalContextProvider from "@/context/LoaderContext";
 import Header from "@/Component/Header";
 
 import ThemeProvider from "@/Provider/themeProvider";
+import { SessionProvider } from "next-auth/react";
+import AuthProvider from "@/Provider/AuthProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,10 +34,12 @@ export default function RootLayout({
       >
         
         <GlobalContextProvider>
+          <AuthProvider>
           <ThemeProvider>
         <Header />
         {children}
         </ThemeProvider>
+        </AuthProvider>
         </GlobalContextProvider>
       </body>
     </html>

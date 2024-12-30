@@ -1,11 +1,13 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import clsx from 'clsx';
 import { navItem } from '@/utils';
 import Link from 'next/link';
 import ThemeSwitcher from './ThemeSwitcher';
 import { useTheme } from 'next-themes';
+import SignInButton from './SignInButton';
+import { useSession } from 'next-auth/react';
 
 const Header = () => {
 //We have to make this navbar stick for devices having higher height
@@ -13,8 +15,16 @@ const Header = () => {
 //We can also access the window.scrollY
 //We can also add some handler to navbar using window.addEventListener('scrollY')
 const [sticky, setSticky]=useState<boolean>(false);
-const [navbar, setNavbar]=useState<boolean>(true);
+const [navbar, setNavbar]=useState<boolean>(true); //this is for closing and opening the navbar in mobile view
+
 const {theme}=useTheme();
+const {data:session}=useSession();
+
+useEffect(()=>{
+  console.log("Session in useEffect",session);
+},[session]);
+
+console.log("here in header section");
 
 
 
@@ -41,9 +51,7 @@ const {theme}=useTheme();
 
       <div className='ml-auto flex gap-3 relative'>
         <ThemeSwitcher />
-        <button className='mr-[4rem] md:mr-[1rem] '>
-            Logout
-        </button>
+        <SignInButton/>
 
         <button className={clsx(' right-0 absolute p-1  md:hidden', )} onClick={()=>{setNavbar((val)=>!val)}}>
           <span className={clsx('relative my-1 h-0.5 w-[30px] block bg-black transition-all duration-200' ,
