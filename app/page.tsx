@@ -13,6 +13,7 @@ export default function Home() {
     }
   else{
       document.documentElement.setAttribute('data-theme', 'light');
+      
       }
   },[theme])
   return (

@@ -8,6 +8,7 @@ import ThemeSwitcher from './ThemeSwitcher';
 import { useTheme } from 'next-themes';
 import SignInButton from './SignInButton';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const Header = () => {
 //We have to make this navbar stick for devices having higher height
@@ -15,8 +16,8 @@ const Header = () => {
 //We can also access the window.scrollY
 //We can also add some handler to navbar using window.addEventListener('scrollY')
 const [sticky, setSticky]=useState<boolean>(false);
-const [navbar, setNavbar]=useState<boolean>(true); //this is for closing and opening the navbar in mobile view
-
+const [navbar, setNavbar]=useState<boolean>(false); //this is for closing and opening the navbar in mobile view
+const router=useRouter();
 const {theme}=useTheme();
 const {data:session}=useSession();
 
@@ -29,12 +30,12 @@ console.log("here in header section");
 
 
   return (
-    <div className={clsx('relative container backdrop-blur flex items-center gap-4 p-2', theme==='dark'?'':'')}>
+    <div className={clsx('relative container backdrop-blur flex items-center justify-between gap-4 p-2', theme==='dark'?'':'')}>
       <h2 className='text-xl font-semibold'>
         Inkspire
       </h2>
       
-      <ul className={clsx('absolute -right-[2rem] pr-[3rem]  top-10 md:static md:top-2 md:flex md:justify-center md:items-center md:gap-3 md:pl-10  border border-blue-800 p-2 md:border-none',!navbar&&'invisible md:visible', theme==='dark'&&'bg-slate-900 md:bg-inherit' )}>
+      <ul className={clsx('absolute -right-[0rem]  pr-[3rem]  top-[4rem] md:static md:top-2 md:flex md:justify-center md:items-center md:gap-3 md:pl-10  border border-blue-800 p-2 md:border-none',!navbar&&'invisible md:visible', theme==='dark'&&'bg-slate-900 md:bg-inherit' )}>
 
       
       {
@@ -49,9 +50,16 @@ console.log("here in header section");
 
       
 
-      <div className='ml-auto flex gap-3 relative'>
+      <div className='ml-auto flex gap-3 items-center relative'>
+        
         <ThemeSwitcher />
-        <SignInButton/>
+        <button className='p-3 bg-blue-800 rounded-md' onClick={()=>{
+            router.push('/create');
+        }} >
+          Create 
+        </button>
+
+        <SignInButton />
 
         <button className={clsx(' right-0 absolute p-1  md:hidden', )} onClick={()=>{setNavbar((val)=>!val)}}>
           <span className={clsx('relative my-1 h-0.5 w-[30px] block bg-black transition-all duration-200' ,
